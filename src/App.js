@@ -1,3 +1,4 @@
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,15 +35,14 @@ This is a [link](https://www.freecodecamp.com)
 `;
 
 
-class MarkdownPreviewer extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       string: originalState
     };
-    this.handleChange = this.handleChange.bind(this);
   }
-  handleChange = (e) => {
+  handleChange(e) {
     this.setState({string: e.target.value});
   }
   newMarkup() {
