@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import marked from 'marked';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { button } from 'react-bootstrap';
+import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
 const originalState = `
 # Welcome to my React Markdown Previewer!
@@ -34,7 +35,6 @@ This is a [link](https://www.freecodecamp.com)
 ![React](https://goo.gl/Umyytc)
 `;
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -45,28 +45,36 @@ class App extends React.Component {
   handleChange(e) {
     this.setState({string: e.target.value});
   }
-  newMarkup() {
-    return { __html: marked(this.state.string, {breaks: true}) };
-  }
   render() {
+    const { string } = this.state;
+
+    const markup = marked(string, {breaks: true});
     return (
-      <div className="container"> 
-      <div className="row">
-      <div className="col-12">
+      <div><h1 className="text-center m-6">
+      Markdown Previewer
+      <hr />
+    </h1>
+      <div className="co">
+      <div className="col-4">
+        <legend className="text-center">Editor</legend>
+        <ClassicEditorBase
+          editor={ClassicEditor}
+          data={text}
+          onChange={(event, editor) => {
+            const data = editor.getData()
+            string(data)
+          }}
+          />
+        <textarea className="form-control" id="editor" onChange={this.props.onChange} value={string}></textarea>
+            </div>
+
+      <div className="pre col-4">
       <legend className="text-center">Previewer</legend>
-    <textarea id="editor"></textarea>
     <div className="preview">
-        <div dangerouslySetInnerHTML={this.props.markup}></div>
-        </div>
+        <div dangerouslySetInnerHTML={{__html: markup}} />
         </div>
   </div>
-  
-  <div>
-  <div className="col-12">
-    <legend className="text-center">Editor</legend>
-    <textarea className="form-control" id="editor" onChange={this.props.onChange} value={this.props.value}></textarea>
-        </div>
-        </div>
+  </div>
   </div>
     );
   }
