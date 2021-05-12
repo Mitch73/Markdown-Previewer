@@ -3,7 +3,8 @@ import './App.css';
 import marked from 'marked';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { button } from 'react-bootstrap';
-import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-react';
 
 const originalState = `
 # Welcome to my React Markdown Previewer!
@@ -39,14 +40,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      string: originalState
+      string: originalState,
+      setString:''
     };
   }
   handleChange(e) {
     this.setState({string: e.target.value});
   }
   render() {
-    const { string } = this.state;
+    const { string, setString } = this.state;
 
     const markup = marked(string, {breaks: true});
     return (
@@ -57,13 +59,8 @@ class App extends React.Component {
       <div className="co">
       <div className="col-4">
         <legend className="text-center">Editor</legend>
-        <ClassicEditorBase
+        <CKEditor
           editor={ClassicEditor}
-          data={text}
-          onChange={(event, editor) => {
-            const data = editor.getData()
-            string(data)
-          }}
           />
         <textarea className="form-control" id="editor" onChange={this.props.onChange} value={string}></textarea>
             </div>
